@@ -1,0 +1,24 @@
+{
+  "name": "ssb-graphql-server",
+  "version": "0.0.1",
+  "description": "Server running Secure Scuttlebot over GraphQL.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "altair-express-middleware": "^0.1.4",
+    "apollo-server-express": "^1.3.4",
+    "express": "^4.16.3",
+    "graphql": "^0.13.2",
+    "graphql-subscriptions": "^0.5.8",
+    "graphql-tools": "^2.23.1",
+    "mkdirp": "^0.5.1",
+    "ssb-client": "^4.5.7",
+    "ssb-keys": "^7.0.14",
+    "subscriptions-transport-ws": "^0.9.7"
+  }
+}
