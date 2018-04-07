@@ -4,7 +4,8 @@
   "description": "Server running Secure Scuttlebot over GraphQL.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "push": "git push origin master && git push --tags ssb master"
   },
   "keywords": [],
   "author": "",
@@ -17,7 +18,9 @@
     "graphql-subscriptions": "^0.5.8",
     "graphql-tools": "^2.23.1",
     "mkdirp": "^0.5.1",
+    "scuttlebot": "^11.1.1",
     "ssb-client": "^4.5.7",
+    "ssb-config": "^2.2.0",
     "ssb-keys": "^7.0.14",
     "subscriptions-transport-ws": "^0.9.7"
   }

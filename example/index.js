@@ -1,0 +1,5 @@
+const server = require('../')
+
+server({
+
+})

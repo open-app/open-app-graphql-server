@@ -21,15 +21,17 @@ const startSsbServer = () => new Promise((resolve, reject) => {
   console.log('Starting SSB SERVER')
   resolve(
     require('scuttlebot/index')
+      .use(require('scuttlebot/plugins/plugins'))
       .use(require('scuttlebot/plugins/master'))
-      .use(require('community-apps-ssb-plugin'))
-      .use(require('scuttlebot/plugins/gossip'))
+      .use(require('scuttlebot/plugins/replicate'))
+      // .use(require('scuttlebot/plugins/invite'))
+      // .use(require('scuttlebot/plugins/block'))
+      // .use(require('scuttlebot/plugins/local'))
+      // .use(require('scuttlebot/plugins/logging'))
       .call(null, config)
     )
 })
-//   .use(require('scuttlebot/plugins/plugins'))
-//   .use(require('scuttlebot/plugins/master'))
-//   .use(require('scuttlebot/plugins/replicate'))
+  
 //   .use(require('ssb-friends'))
 //   .use(require('ssb-blobs'))
 //   .use(require('ssb-serve-blobs'))
@@ -38,14 +40,8 @@ const startSsbServer = () => new Promise((resolve, reject) => {
 //   .use(require('ssb-about'))
 //   .use(require('ssb-contacts'))
 //   .use(require('ssb-query'))
-//   .use(require('scuttlebot/plugins/invite'))
-//   .use(require('scuttlebot/plugins/block'))
-//   .use(require('scuttlebot/plugins/local'))
-//   .use(require('scuttlebot/plugins/logging'))
-//   .call(null, config))
-// })
 
-const runSsbClient = () => new Promise((resolve, reject) => {
+const runSsbClient = (plugins, opts) => new Promise((resolve, reject) => {
   Client(config.keys, config, (err, sbot) => {
     if (err) console.log('SSB CLIENT ERROR', err)
     console.log('Starting SSB CLIENT: ')

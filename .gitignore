@@ -1,5 +1,6 @@
 .DS_Store
 .history/
+example/node_modules/
 
 # Logs
 logs
