@@ -3,11 +3,11 @@
 ## Usage
 
 ```
-const server = require('ssb-graphql-server')
+const server = require('open-app-graphql-server')
 
 
 server({
-    require('ssb-graphql-defaults'),
+    require('open-app-graphql-defaults'),
 })
 // Starts a Secure Scuttlebot server and a client that feeds a GraphQL layer
 // Use http://localhost:4000/graphql for queries, /subscriptions for subscriptions and /playground for interactive GraphQL IDE
