@@ -4,10 +4,10 @@
 
 ```
 const server = require('open-app-graphql-server')
-
+const defaults = require('oag-defaults')
 
 server({
-    require('open-app-graphql-defaults'),
+    defaults,
 })
 // Starts a Secure Scuttlebot server and a client that feeds a GraphQL layer
 // Use http://localhost:4000/graphql for queries, /subscriptions for subscriptions and /playground for interactive GraphQL IDE

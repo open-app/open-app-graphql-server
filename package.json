@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "push": "git push origin master && git push --tags ssb master"
+    "push": "git push origin master && git push --tags ssb master",
+    "dev": "nodemon example"
   },
   "keywords": [],
   "author": "",

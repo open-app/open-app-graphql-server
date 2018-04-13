@@ -17,8 +17,9 @@ config.path = ssbPath
 config.keys = keys
 config.manifest = manifest
 
-const startSsbServer = () => new Promise((resolve, reject) => {
+const startSsbServer = (plugins) => new Promise((resolve, reject) => {
   console.log('Starting SSB SERVER')
+  console.log('With plugins', plugins)
   resolve(
     require('scuttlebot/index')
       .use(require('scuttlebot/plugins/plugins'))
@@ -28,18 +29,18 @@ const startSsbServer = () => new Promise((resolve, reject) => {
       // .use(require('scuttlebot/plugins/block'))
       // .use(require('scuttlebot/plugins/local'))
       // .use(require('scuttlebot/plugins/logging'))
+      // .use(require('ssb-friends'))
+      // .use(require('ssb-blobs'))
+      // .use(require('ssb-serve-blobs'))
+      // .use(require('ssb-backlinks'))
+      // .use(require('ssb-private'))
+      // .use(require('ssb-about'))
+      // .use(require('ssb-contacts'))
+      // .use(require('ssb-query'))
       .call(null, config)
     )
 })
-  
-//   .use(require('ssb-friends'))
-//   .use(require('ssb-blobs'))
-//   .use(require('ssb-serve-blobs'))
-//   .use(require('ssb-backlinks'))
-//   .use(require('ssb-private'))
-//   .use(require('ssb-about'))
-//   .use(require('ssb-contacts'))
-//   .use(require('ssb-query'))
+
 
 const runSsbClient = (plugins, opts) => new Promise((resolve, reject) => {
   Client(config.keys, config, (err, sbot) => {
@@ -50,7 +51,7 @@ const runSsbClient = (plugins, opts) => new Promise((resolve, reject) => {
 })
 
   
-  module.exports = () => new Promise((resolve, reject) => {
-    startSsbServer()
-      .then(() => runSsbClient().then(res => resolve(res)))
+  module.exports = (plugins, opts) => new Promise((resolve, reject) => {
+    startSsbServer(plugins, opts)
+      .then(() => runSsbClient(plugins, opts).then(res => resolve(res)))
   })

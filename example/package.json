@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "push": "git push --tags ssb master",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
