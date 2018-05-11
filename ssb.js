@@ -19,16 +19,15 @@ config.manifest = manifest
 
 const startSsbServer = (plugins) => new Promise((resolve, reject) => {
   console.log('Starting SSB SERVER')
-  console.log('With plugins', plugins)
   resolve(
     require('scuttlebot/index')
       .use(require('scuttlebot/plugins/plugins'))
       .use(require('scuttlebot/plugins/master'))
       .use(require('scuttlebot/plugins/replicate'))
-      // .use(require('scuttlebot/plugins/invite'))
+      .use(require('scuttlebot/plugins/invite'))
       // .use(require('scuttlebot/plugins/block'))
-      // .use(require('scuttlebot/plugins/local'))
-      // .use(require('scuttlebot/plugins/logging'))
+      .use(require('scuttlebot/plugins/local'))
+      .use(require('scuttlebot/plugins/logging'))
       // .use(require('ssb-friends'))
       // .use(require('ssb-blobs'))
       // .use(require('ssb-serve-blobs'))

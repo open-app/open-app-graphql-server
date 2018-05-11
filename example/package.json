@@ -4,10 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "push": "git push origin master && git push --tags ssb master",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon ."
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "ssb-graphql-defaults": "^1.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^1.17.4"
+  }
 }

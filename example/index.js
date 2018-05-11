@@ -1,8 +1,8 @@
 const server = require('../')
-const defaults = require('../../oag-defaults')
-
-console.log(defaults)
+const ssbDefaults = require('ssb-graphql-defaults')
+const datTypes = require('../../dat-graphql')
 
 server([
-  defaults
+  ssbDefaults,
+  datTypes
 ])
