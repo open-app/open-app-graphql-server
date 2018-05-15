@@ -21,10 +21,20 @@
     "graphql-tools": "^3.0.1",
     "mkdirp": "^0.5.1",
     "scuttlebot": "git://github.com/luandro/scuttlebot",
+    "ssb-about": "^0.1.2",
     "ssb-afterparty": "0.0.2",
+    "ssb-backlinks": "^0.7.1",
+    "ssb-blobs": "^1.1.5",
     "ssb-client": "^4.5.7",
     "ssb-config": "^2.2.0",
+    "ssb-contacts": "0.0.2",
+    "ssb-friends": "^2.4.0",
     "ssb-keys": "^7.0.14",
+    "ssb-private": "^0.2.1",
+    "ssb-query": "^2.0.1",
+    "ssb-serve-blobs": "^1.0.0",
+    "ssb-sort": "^1.1.0",
+    "ssb-threads": "^1.1.0",
     "subscriptions-transport-ws": "^0.9.7"
   }
 }
