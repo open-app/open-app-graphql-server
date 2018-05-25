@@ -1,3 +1,7 @@
 module.exports = (plugins, opts) => {
-  require('./ssb')(opts).then(sbot => require('./graphql')(sbot, plugins, opts))
+  require('./src/setStorage')(plugins, opts)
+    .then(paths => {
+      require('./src/ssb')(plugins, opts, paths)
+        .then(sbot => require('./src/graphql')(sbot, paths, plugins, opts))
+    })  
 }
