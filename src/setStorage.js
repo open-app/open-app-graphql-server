@@ -7,13 +7,21 @@ module.exports = (plugins, opts) => new Promise((resolve, reject) => {
   const isMobile = () => os.arch() === ('arm' || 'arm64') 
   console.log('isMobile', isMobile())
   let writablePath = os.homedir()
-  if (isMobile()) {
-    writablePath = path.join(__dirname, '..')
+  let ssbPath = path.resolve(writablePath, '.ssb')
+  let datPath = path.resolve(writablePath, 'dat')
+  if (opts) {
+    if (opts.writablePath) {
+      writablePath = opts.writablePath
+      ssbPath = path.resolve(writablePath, '.ssb')
+      datPath = path.resolve(writablePath, 'dat')
+    }
+    if (opts.ssbPath) ssbPath = opts.ssbPath
+    if (opts.datPath) datPath = opts.datPath
   }
   console.log('writablePath', writablePath)
+  console.log('ssbPath', ssbPath)
+  console.log('datPath', datPath)
 
-  const ssbPath = path.resolve(writablePath, '.ssb')
-  const datPath = path.resolve(writablePath, 'dat')
 
   if (!fs.existsSync(ssbPath)) {
     mkdirp.sync(ssbPath)
