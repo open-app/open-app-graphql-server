@@ -1,21 +1,18 @@
 const express = require('express')
 const bodyParser = require('body-parser')
-const { graphqlExpress } = require('apollo-server-express')
+const { graphqlExpress, graphiqlExpress } = require('apollo-server-express')
 const cors = require('cors')
 const { mergeSchemas, makeExecutableSchema } = require('graphql-tools')
 const { SubscriptionServer } = require('subscriptions-transport-ws')
 const { execute, subscribe } = require('graphql')
 const { createServer } = require('http')
 const dat = require('dat-node')
-
-const { altairExpress } = require('altair-express-middleware')
 const { PubSub } = require('graphql-subscriptions')
 const pubsub = new PubSub()
+const server = express()
 const PORT = 4000
 
 module.exports = (sbot, paths, plugins, opts) => {
-  const server = express()
-  const pubsub = new PubSub()
   let schemas = []
 
   plugins.map((pl, index) => schemas.push(makeExecutableSchema(pl)))
@@ -41,7 +38,7 @@ module.exports = (sbot, paths, plugins, opts) => {
     }),
   )
 
-  server.use('/playground', altairExpress({
+  server.use('/playground', graphiqlExpress({
     endpointURL: `/graphql`,
     subscriptionsEndpoint: `ws://localhost:${PORT}/subscriptions`
   }))
