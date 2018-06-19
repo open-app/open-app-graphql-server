@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "push": "git push origin master && git push --tags ssb master",
-    "dev": "cd example && npm run dev"
+    "dev": "cd example && npm run dev",
+    "build": "babel src -d lib --presets latest"
   },
   "keywords": [],
   "author": "",
@@ -36,5 +37,9 @@
     "ssb-sort": "^1.1.0",
     "ssb-threads": "^2.0.0",
     "subscriptions-transport-ws": "^0.9.11"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-latest": "^6.24.1"
   }
 }
