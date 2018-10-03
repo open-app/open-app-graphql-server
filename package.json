@@ -22,7 +22,7 @@
     "graphql-subscriptions": "^0.5.8",
     "graphql-tools": "^3.0.2",
     "mkdirp": "^0.5.1",
-    "scuttlebot": "git://github.com/luandro/scuttlebot",
+    "scuttlebot": "^12.2.0",
     "ssb-about": "^0.1.2",
     "ssb-afterparty": "0.0.2",
     "ssb-backlinks": "^0.7.1",
