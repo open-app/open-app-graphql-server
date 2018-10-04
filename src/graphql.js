@@ -1,6 +1,6 @@
 const express = require('express')
 const bodyParser = require('body-parser')
-const { graphqlExpress, graphiqlExpress } = require('apollo-server-express')
+const { ApolloServer } = require('apollo-server-express')
 const cors = require('cors')
 const { mergeSchemas, makeExecutableSchema } = require('graphql-tools')
 const { SubscriptionServer } = require('subscriptions-transport-ws')
@@ -9,8 +9,8 @@ const { createServer } = require('http')
 const dat = require('dat-node')
 const { PubSub } = require('graphql-subscriptions')
 const pubsub = new PubSub()
-const server = express()
 const PORT = 4000
+const WS_PORT = 5000
 
 module.exports = (sbot, paths, plugins, opts) => {
   let schemas = []
@@ -21,40 +21,52 @@ module.exports = (sbot, paths, plugins, opts) => {
     schemas,
   })
 
-  server.use('*', cors({ origin: `http://localhost:${PORT}` }))
-  server.use(
-    '/graphql',
-    bodyParser.json(),
-    graphqlExpress(req => {  
-      return {
-        schema,
-        context: {
-          pubsub,
-          sbot,
-          dat,
-          paths,
+  const server = new ApolloServer({
+    schema,
+    context: {
+      pubsub,
+      sbot,
+      dat,
+      paths,
+    },
+    playground: {
+      subscriptionEndpoint: `ws://localhost:${WS_PORT}/graphql`,
+      settings: {
+        'editor.theme': 'light',
+        'editor.cursorShape': 'block',
+      },
+      tabs: [
+        {
+          endpoint: `http://localhost:${PORT}/graphql`,
+          // query: defaultQuery,
         },
-      }
-    }),
+      ],
+    },
+  })
+
+  const app = express()
+  app.use('*', cors({ origin: `http://localhost:${PORT}` }))
+  server.applyMiddleware({ app })
+
+  app.listen({ port: 4000 }, () =>
+    console.log(`🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}`),
   )
 
-  server.use('/playground', graphiqlExpress({
-    endpointURL: `/graphql`,
-    subscriptionsEndpoint: `ws://localhost:${PORT}/subscriptions`
-  }))
+  const websocketServer = createServer(app)
 
-  const ws = createServer(server);
-  ws.listen(PORT, () => {
-    console.log(`Apollo Server is now running on http://localhost:${PORT}`);
-    // Set up the WebSocket for handling GraphQL subscriptions
-    new SubscriptionServer({
-      execute,
-      subscribe,
-      schema,
-      onConnect: (connectionParams, webSocket) => ({ pubsub, sbot, dat, paths }),
-    }, {
-      server: ws,
-      path: '/subscriptions',
-    })
+  websocketServer.listen(WS_PORT, () => {
+    console.log(`Websocket Server is now running on ws://localhost:${WS_PORT}/graphql`)
+    new SubscriptionServer(
+      {
+        schema,
+        execute,
+        subscribe,
+        onConnect: (connectionParams, webSocket) => ({ pubsub, sbot, dat, paths }),
+      },
+      {
+        server: websocketServer,
+        path: '/graphql',
+      },
+    )
   })
 }
