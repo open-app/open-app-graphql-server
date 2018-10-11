@@ -1,6 +1,7 @@
 .DS_Store
 .history/
 example/node_modules/
+.vscode/
 
 # Logs
 logs
