@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@babel/polyfill": "^7.0.0",
     "apphub-graphql": "0.0.4",
     "dat-graphql": "0.0.4",
     "ssb-graphql-defaults": "^1.0.16"
