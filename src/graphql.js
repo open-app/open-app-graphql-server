@@ -45,6 +45,7 @@ module.exports = (sbot, paths, plugins, opts) => {
   })
 
   const app = express()
+  app.use(bodyParser.json())
   app.use('*', cors({ origin: `http://localhost:${PORT}` }))
   server.applyMiddleware({ app })
 
