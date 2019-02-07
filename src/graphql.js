@@ -31,6 +31,7 @@ module.exports = (sbot, paths, plugins, opts) => {
       sbot,
       dat,
       paths,
+      opts,
     },
     playground: {
       subscriptionEndpoint: `ws://localhost:${WS_PORT}/graphql`,

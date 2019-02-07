@@ -1,4 +1,4 @@
-module.exports = function (plugins, opts) {
+module.exports = (plugins, opts) => {
   require('./src/setStorage')(plugins, opts)
     .then(paths => {
       require('./src/ssb')(plugins, opts, paths)
