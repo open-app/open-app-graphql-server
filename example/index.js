@@ -11,4 +11,7 @@ server([
   apphub,
   economic,
   bazaar,
-], { scope: 'ssb-01Sk9Yyu' })
+], {
+  scope: 'ssb-01Sk9Yyu',
+  key: 'secret-key',
+})

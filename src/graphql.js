@@ -1,4 +1,3 @@
-require("dotenv").config()
 const express = require('express')
 const bodyParser = require('body-parser')
 const { ApolloServer } = require('apollo-server-express')
@@ -11,11 +10,12 @@ const dat = require('dat-node')
 const { PubSub } = require('graphql-subscriptions')
 const auth = require('./auth')
 const pubsub = new PubSub()
-const PORT = process.env.PORT || 4000
-const ALLOWED_ORIGIN = process.env.ALLOWED_ORIGIN || `http://localhost:${PORT}`
-const WS_PORT = 5000
 
 module.exports = (sbot, paths, plugins, opts) => {
+  const PORT = opts.port || 4000
+  const ALLOWED_ORIGIN = opts.allowed_origin || `http://localhost:${PORT}`
+  const WS_PORT = 5000
+
   let schemas = []
 
   plugins.map((pl, index) => schemas.push(makeExecutableSchema(pl)))
@@ -51,7 +51,7 @@ module.exports = (sbot, paths, plugins, opts) => {
   const app = express()
   app.use(bodyParser.json())
   app.use('*', cors({ origin: ALLOWED_ORIGIN }))
-  app.use('*', auth)
+  app.use('*', auth({ key: opts.key }))
   server.applyMiddleware({ app })
 
   app.listen({ port: PORT }, () =>
