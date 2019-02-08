@@ -13,7 +13,7 @@
   "dependencies": {
     "apphub-graphql": "0.0.4",
     "dat-graphql": "0.0.4",
-    "economic-sentences-graphql": "^1.0.1",
+    "economic-sentences-graphql": "^1.0.4",
     "ssb-graphql-defaults": "^2.0.0"
   }
 }
