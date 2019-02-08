@@ -1,6 +1,6 @@
 {
   "name": "open-app-graphql-server",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Server running Secure Scuttlebot over GraphQL.",
   "main": "index.js",
   "scripts": {
