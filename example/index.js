@@ -13,5 +13,5 @@ server([
   bazaar,
 ], {
   scope: 'ssb-01Sk9Yyu',
-  key: 'secret-key',
+  // key: 'secret-key', // uncomment to use authentication
 })
