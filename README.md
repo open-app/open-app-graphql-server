@@ -10,7 +10,7 @@ Works with Node v8 or higher.
 
 ## Usage
 
-To try an example simply `npm i` && `npm run install` and run `npm run dev` or `yarn dev` to run the example server. Go to [http://localhost:4000/graphql](http://localhost:4000/graphql) to try it out.
+To try an example simply `npm i` && `npm run install-example` and run `npm run dev` or `yarn dev` to run the example server. Go to [http://localhost:4000/graphql](http://localhost:4000/graphql) to try it out.
 
 To use for your own project simply install with `npm i -S open-app-graphq-server` or `yarn add open-app-graphq-server`.
 
