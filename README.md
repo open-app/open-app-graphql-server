@@ -36,6 +36,5 @@ Check out [economic-sentences-graphql](https://github.com/open-app/economic-sent
 
 ### Plans
 
-- Transport over [multiserver](https://github.com/ssbc/multiserver) instead of Express
 - Schema to deal with `fs`
 - Have plugins that include not only GraphQL schemas but also `ssb` plugins and `flumedb` views.
