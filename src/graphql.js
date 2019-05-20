@@ -1,78 +1,58 @@
-const express = require('express')
-const bodyParser = require('body-parser')
 const { ApolloServer } = require('apollo-server-express')
-const cors = require('cors')
 const { mergeSchemas, makeExecutableSchema } = require('graphql-tools')
 const { SubscriptionServer } = require('subscriptions-transport-ws')
 const { execute, subscribe } = require('graphql')
-const { createServer } = require('http')
 const dat = require('dat-node')
 const { PubSub } = require('graphql-subscriptions')
-const auth = require('./auth')
 const pubsub = new PubSub()
 
-module.exports = (sbot, paths, plugins, opts) => {
-  const PORT = opts.port || 4000
-  const ALLOWED_ORIGIN = opts.allowed_origin || `http://localhost:${PORT}`
-  const WS_PORT = 5000
-
-  let schemas = []
-
+let schemas = []
+let schema = (plugins) => {
   plugins.map((pl, index) => schemas.push(makeExecutableSchema(pl)))
-
-  const schema = mergeSchemas({
+  return mergeSchemas({
     schemas,
-  })
+  }) 
+}
 
-  const server = new ApolloServer({
+const server = (sbot, paths, opts, schema, ports) => new ApolloServer({
+  schema,
+  context: {
+    pubsub,
+    sbot,
+    dat,
+    paths,
+    opts,
+  },
+  playground: {
+    subscriptionEndpoint: `ws://localhost:${ports.WS_PORT}/graphql`,
+    settings: {
+      'editor.theme': 'light',
+      'editor.cursorShape': 'block',
+    },
+    tabs: [
+      {
+        endpoint: `http://localhost:${ports.PORT}/graphql`,
+        // query: defaultQuery,
+      },
+    ],
+  },
+})
+
+const subscriptionServer = (sbot, paths, plugins, opts, websocketServer, schema) => new SubscriptionServer(
+  {
     schema,
-    context: {
-      pubsub,
-      sbot,
-      dat,
-      paths,
-      opts,
-    },
-    playground: {
-      subscriptionEndpoint: `ws://localhost:${WS_PORT}/graphql`,
-      settings: {
-        'editor.theme': 'light',
-        'editor.cursorShape': 'block',
-      },
-      tabs: [
-        {
-          endpoint: `http://localhost:${PORT}/graphql`,
-          // query: defaultQuery,
-        },
-      ],
-    },
-  })
+    execute,
+    subscribe,
+    onConnect: (connectionParams, webSocket) => ({ pubsub, sbot, dat, paths }),
+  },
+  {
+    server: websocketServer,
+    path: '/graphql',
+  }
+)
 
-  const app = express()
-  app.use(bodyParser.json())
-  app.use('*', cors({ origin: ALLOWED_ORIGIN }))
-  app.use('*', auth({ key: opts.key }))
-  server.applyMiddleware({ app })
-
-  app.listen({ port: PORT }, () =>
-    console.log(`🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}`),
-  )
-
-  const websocketServer = createServer(app)
-
-  websocketServer.listen(WS_PORT, () => {
-    console.log(`Websocket Server is now running on ws://localhost:${WS_PORT}/graphql`)
-    new SubscriptionServer(
-      {
-        schema,
-        execute,
-        subscribe,
-        onConnect: (connectionParams, webSocket) => ({ pubsub, sbot, dat, paths }),
-      },
-      {
-        server: websocketServer,
-        path: '/graphql',
-      },
-    )
-  })
+module.exports = {
+  server,
+  subscriptionServer,
+  schema,
 }
