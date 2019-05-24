@@ -5,7 +5,7 @@ const { createServer } = require('http')
 let { server, subscriptionServer, schema } = require('./graphql')
 const auth = require('./auth')
 
-module.exports = (sbot, paths, plugins, opts) => {
+module.exports = async (sbot, paths, plugins, opts) => {
   const PORT = opts.port || 4000
   const ALLOWED_ORIGIN = opts.cors || `http://localhost:${PORT}`
   const WS_PORT = opts.socketPort || 5000
@@ -17,7 +17,7 @@ module.exports = (sbot, paths, plugins, opts) => {
     app.use('*', cors({ origin: ALLOWED_ORIGIN }))
   }
   app.use('*', auth({ key: opts.auth }))
-  server = server(sbot, paths, opts, schema, { PORT, WS_PORT })
+  server = await server(sbot, paths, opts, schema, { PORT, WS_PORT })
   server.applyMiddleware({
     app,
     cors: opts.cors ? true : false,
