@@ -2,14 +2,15 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const { createServer } = require('http')
-let { server, subscriptionServer, schema } = require('./graphql')
+let { server, subscriptionServer } = require('./graphql')
+const schemaStitch = require('./schemaStitch')
 const auth = require('./auth')
 
 module.exports = async (sbot, paths, plugins, opts) => {
   const PORT = opts.port || 4000
   const ALLOWED_ORIGIN = opts.cors || `http://localhost:${PORT}`
   const WS_PORT = opts.socketPort || 5000
-  schema = schema(plugins)
+  schema = await schemaStitch(plugins)
 
   const app = express()
   app.use(bodyParser.json())

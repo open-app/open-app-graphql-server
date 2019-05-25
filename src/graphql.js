@@ -1,27 +1,14 @@
 const { ApolloServer } = require('apollo-server-express')
-const { mergeSchemas, makeExecutableSchema } = require('graphql-tools')
 const { SubscriptionServer } = require('subscriptions-transport-ws')
 const { execute, subscribe } = require('graphql')
+const schemaStitch = require('./schemaStitch')
+
 const dat = require('dat-node')
 const { PubSub } = require('graphql-subscriptions')
 const pubsub = new PubSub()
 
-let schemas = []
-let schema = async (plugins) => {
-  try {
-    plugins.map((pl, index) => schemas.push(makeExecutableSchema(pl)))
-    const patchql = await require('./patchql')()
-    schemas.push(patchql)
-    return mergeSchemas({
-      schemas,
-    }) 
-  } catch (err) {
-    console.log('Error setting schema', err)
-  }
-}
-
 const server = async (sbot, paths, opts, schema, ports) => new ApolloServer({
-  schema: await schema,
+  schema,
   context: {
     pubsub,
     sbot,
@@ -46,7 +33,7 @@ const server = async (sbot, paths, opts, schema, ports) => new ApolloServer({
 
 const subscriptionServer = async (sbot, paths, plugins, opts, websocketServer, schema) => new SubscriptionServer(
   {
-    schema: await schema,
+    schema,
     execute,
     subscribe,
     onConnect: (connectionParams, webSocket) => ({ pubsub, sbot, dat, paths }),
@@ -60,5 +47,4 @@ const subscriptionServer = async (sbot, paths, plugins, opts, websocketServer, s
 module.exports = {
   server,
   subscriptionServer,
-  schema,
 }
