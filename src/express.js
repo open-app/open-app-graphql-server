@@ -16,12 +16,14 @@ module.exports = async (sbot, paths, plugins, opts) => {
   app.use(bodyParser.json())
   if (opts.cors) {
     app.use('*', cors({ origin: ALLOWED_ORIGIN }))
+  } else {
+    app.use(cors())
   }
   app.use('*', auth({ key: opts.auth }))
   server = await server(sbot, paths, opts, schema, { PORT, WS_PORT })
   server.applyMiddleware({
     app,
-    cors: opts.cors ? true : false,
+    cors: true,
   })
 
   app.listen({ port: PORT }, () =>

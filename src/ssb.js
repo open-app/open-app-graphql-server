@@ -28,24 +28,23 @@ const startSsbServer = (plugins, opts, ssbPath) => new Promise(async (resolve, r
     .use(require('ssb-ws'))
     .use(require('ssb-ebt'))
     .use(require('ssb-ooo'))
-    // .use(require('ssb-friends'))
-    // .use(require('ssb-blobs'))
+    .use(require('ssb-serve-blobs'))
     // // add third-party plugins
-    // .use(require('ssb-serve-blobs'))
     // .use(require('ssb-backlinks'))
     // .use(require('ssb-private'))
     // .use(require('ssb-about'))
     // .use(require('ssb-contacts'))
     // .use(require('ssb-threads'))
-    // .call(null, config)
   
   require('ssb-plugins').loadUserPlugins(createSsbServer, config)
 
   plugins.map(pl => {
     if (pl.ssb && pl.ssb.length > 0) {
       pl.ssb.map(ssbPlugin => {
+        // Need better path
+        const pluginPath = `${Path.dirname(require.main.filename)}/node_modules/${ssbPlugin}`
         return createSsbServer = createSsbServer
-          .use(require(`${Path.dirname(require.main.filename)}/node_modules/${ssbPlugin}`))
+          .use(require(pluginPath))
       })
     }
   })
