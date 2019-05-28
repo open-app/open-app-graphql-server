@@ -29,9 +29,9 @@ const startSsbServer = (plugins, opts, ssbPath) => new Promise(async (resolve, r
     .use(require('ssb-ebt'))
     .use(require('ssb-ooo'))
     .use(require('ssb-serve-blobs'))
+    .use(require('ssb-private'))
     // // add third-party plugins
     // .use(require('ssb-backlinks'))
-    // .use(require('ssb-private'))
     // .use(require('ssb-about'))
     // .use(require('ssb-contacts'))
     // .use(require('ssb-threads'))
